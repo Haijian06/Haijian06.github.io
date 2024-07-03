@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01 AI Blog</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: white;
+        }
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #f5f5f5;
+            --card-bg: #2a2a2a;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .logo h1 {
+            font-size: 32px;
+            color: var(--text-color);
+            margin: 0;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+        .control-btn, .social-icon {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40px;
+            transition: width 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .search-bar.expanded {
+            width: 200px;
+        }
+        .search-bar input {
+            border: none;
+            background: transparent;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 0;
+            transition: width 0.3s ease-in-out;
+            opacity: 0;
+            outline: none; /* 去掉蓝色边框 */
+        }
+        .search-bar.expanded input {
+            width: calc(100% - 40px);
+            opacity: 1;
+        }
+        .search-icon {
+            padding: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .featured-article {
+            background-color: var(--card-bg);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            display: flex;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        .featured-article img {
+            width: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+            height: 400px; /* 固定高度 */
+        }
+        .featured-article-content {
+            padding-left: 20px;
+        }
+        .featured-article-content h2 {
+            margin-top: 0;
+            font-size: 48px;
+        }
+        .astronomy-section {
+            flex: 1;
+        }
+        .astronomy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .astronomy-cards {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .astronomy-card {
+            flex: 0 1 calc(33.33% - 20px);
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .astronomy-card:hover {
+            transform: translateY(-5px);
+        }
+        .astronomy-card img {
+            width: 100%;
+            height: 200px; /* 固定高度 */
+            object-fit: cover;
+        }
+        .astronomy-card-content {
+            padding: 15px;
+        }
+        .astronomy-card-content h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .astronomy-card-content p {
+            font-size: 14px;
+            color: #666;
+        }
+        .astronomy-card-date {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+        .view-all {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .view-all:hover {
+            text-decoration: underline;
+        }
+        .view-all i {
+            margin-left: 5px;
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .search-result-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+        @media (max-width: 768px) {
+            .featured-article {
+                flex-direction: column;
+            }
+            .featured-article img {
+                width: 100%;
+                margin-bottom: 30px;
+                height: auto; /* 取消固定高度，以便在小屏幕上自适应 */
+            }
+            .astronomy-card {
+                flex: 0 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="https://www.lingyiwanwu.com/en" class="logo">
+            <h1>01.AI</h1>
+        </a>
+        <div class="controls">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="search...">
+                </div>
+                <div class="search-results"></div>
+            </div>
+            <button class="control-btn" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="https://github.com/01-ai/Yi-1.5" class="social-icon">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://discord.gg/RExkNAag" class="social-icon">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://github.com/01-ai/Yi-1.5/issues/2" class="social-icon">
+                <i class="fab fa-weixin"></i>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <a href="./blog.html" class="featured-article">
+            <img src="./assets/images/blog-1.jpeg" alt="Featured Article">
+            <div class="featured-article-content">
+                <h2>01.AI Yi-Large LLM Launch</h2>
+                <p>01.AI's Yi-Large model is now accessible via the Fireworks AI API, offering high performance and cost efficiency, making it an excellent choice for various applications, particularly in natural language processing and multilingual support.</p>
+                <p>June 16, 2024</p>
+            </div>
+        </a>
+
+        <section class="astronomy-section">
+            <div class="astronomy-header">
+                <h2>Latest in AI</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="astronomy-cards">
+                <a href="#" class="astronomy-card">
+                    <img src="./assets/images/blog-2.jpeg" alt="AI in Healthcare">
+                    <div class="astronomy-card-content">
+                        <h3>Dive Deeper into Yi-9B</h3>
+                        <p>You might wonder, “Why Yi-9B?” Let’s dive into the reasons and insights behind its development.</p>
+                        <div class="astronomy-card-date">March 18, 2024</div>
+                    </div>
+                </a>
+                <a href="#" class="astronomy-card">
+                    <img src="./assets/images/blog-5.jpeg" alt="AI and Climate Change">
+                    <div class="astronomy-card-content">
+                        <h3>AI's Role in Combating Climate Change</h3>
+                        <p>Discover how AI-powered solutions are helping to address global environmental challenges.</p>
+                        <div class="astronomy-card-date">June 10, 2024</div>
+                    </div>
+                </a>
+                <a href="#" class="astronomy-card">
+                    <img src="./assets/images/blog-6.jpeg" alt="AI in Education">
+                    <div class="astronomy-card-content">
+                        <h3>The Rise of AI-Powered Personalized Learning</h3>
+                        <p>Exploring how AI is revolutionizing education by tailoring learning experiences to individual students.</p>
+                        <div class="astronomy-card-date">June 5, 2024</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        const searchContainer = document.querySelector('.search-container');
+        const searchBar = document.querySelector('.search-bar');
+        const searchInput = document.querySelector('.search-bar input');
+        const searchResults = document.querySelector('.search-results');
+
+        const dummyResults = [
+            'AI in Finance',
+            'Machine Learning Basics',
+            'Natural Language Processing',
+            'Computer Vision Applications',
+            'Reinforcement Learning'
+        ];
+
+        searchBar.addEventListener('click', () => {
+            searchBar.classList.add('expanded');
+            searchInput.focus();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const value = e.target.value.toLowerCase();
+            const filteredResults = dummyResults.filter(result =>
+                result.toLowerCase().includes(value)
+            );
+
+            displayResults(filteredResults);
+        });
+
+        function displayResults(results) {
+            searchResults.innerHTML = '';
+            if (results.length > 0) {
+                results.forEach(result => {
+                    const div = document.createElement('div');
+                    div.classList.add('search-result-item');
+                    div.textContent = result;
+                    searchResults.appendChild(div);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.style.display = 'none';
+                searchBar.classList.remove('expanded');
+                searchInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

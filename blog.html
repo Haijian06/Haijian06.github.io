@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01 AI Blog</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: white;
+        }
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #f5f5f5;
+            --card-bg: #2a2a2a;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .logo h1 {
+            font-size: 32px;
+            color: var(--text-color);
+            margin: 0;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+        .control-btn, .social-icon {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .markdown-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="https://www.lingyiwanwu.com/en" class="logo">
+            <h1>01.AI</h1>
+        </a>
+        <div class="controls">
+            <button class="control-btn" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="https://github.com/01-ai/Yi-1.5" class="social-icon">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://discord.gg/RExkNAag" class="social-icon">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://github.com/01-ai/Yi-1.5/issues/2" class="social-icon">
+                <i class="fab fa-weixin"></i>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="markdown-content" id="markdown-content">
+            <!-- Markdown content will be loaded here -->
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Function to load and render Markdown content
+        function loadMarkdownContent(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(text => {
+                    const markdownContent = document.getElementById('markdown-content');
+                    markdownContent.innerHTML = marked(text);
+                })
+                .catch(error => console.error('Error fetching markdown:', error));
+        }
+
+        // Example usage: load markdown content from a file
+        loadMarkdownContent('./blog/index.md');
+    </script>
+</body>
+</html>
