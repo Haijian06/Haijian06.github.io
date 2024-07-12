@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>01 AI Blog</title>
+    <title>01.AI Blog</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/yi.ico">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --bg-color: #f5f5f5;
             --text-color: #333;
@@ -32,9 +37,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 20px 40px;
             background-color: var(--card-bg);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
         .logo {
             display: flex;
@@ -42,24 +47,31 @@
             text-decoration: none;
         }
         .logo h1 {
-            font-size: 32px;
+            font-size: 28px;
+            font-weight: bold;
             color: var(--text-color);
             margin: 0;
         }
+
         .controls {
             display: flex;
             align-items: center;
+            gap: 20px;
         }
+
         .control-btn, .social-icon {
-            margin-left: 10px;
-            padding: 5px 10px;
+            background: none;
             border: none;
-            background-color: var(--bg-color);
             color: var(--text-color);
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 20px;
+            font-size: 18px;
+            padding: 5px;
+            transition: color 0.3s ease;
         }
+         .control-btn:hover, .social-icon:hover {
+            color: #007bff;
+        }
+
         .search-container {
             position: relative;
             display: flex;
@@ -72,7 +84,7 @@
             border-radius: 20px;
             overflow: hidden;
             width: 40px;
-            transition: width 0.3s ease-in-out;
+            transition: width 0.3s ease-in-out, background-color 0.3s;
             cursor: pointer;
         }
         .search-bar.expanded {
@@ -127,10 +139,14 @@
             margin-top: 0;
             font-size: 48px;
         }
-        .astronomy-section {
+       .featured-article-content p {
+              line-height: 1.5;
+              font-size: 17px;
+        }
+        .blog-section {
             flex: 1;
         }
-        .astronomy-header {
+        .blog-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -226,6 +242,62 @@
                 flex: 0 1 100%;
             }
         }
+       footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+       .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 300px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .search-result-item {
+            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .search-result-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .search-result-content {
+            flex: 1;
+        }
+        .search-result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        .search-result-snippet {
+            font-size: 0.9em;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        .highlight {
+            background-color: rgba(255, 255, 0, 0.3);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -241,13 +313,13 @@
                 </div>
                 <div class="search-results"></div>
             </div>
-            <button class="control-btn" id="theme-toggle">
-                <i class="fas fa-moon"></i>
+            <button class="control-btn" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon" aria-hidden="true"></i>
             </button>
             <a href="https://github.com/01-ai/Yi-1.5" class="social-icon">
                 <i class="fab fa-github"></i>
             </a>
-            <a href="https://discord.gg/RExkNAag" class="social-icon">
+            <a href="https://discord.gg/Bs7QVYdX" class="social-icon">
                 <i class="fab fa-discord"></i>
             </a>
             <a href="https://github.com/01-ai/Yi-1.5/issues/2" class="social-icon">
@@ -256,50 +328,50 @@
         </div>
     </header>
 
-    <main>
-        <a href="./blog.html" class="featured-article">
-            <img src="./assets/images/blog-1.jpeg" alt="Featured Article">
+ <main>
+        <a href="blog/01-ai-yi-large-llm-launch/" class="featured-article">
+            <img src="./assets/images/blog-1.webp" alt="Featured Article">
             <div class="featured-article-content">
                 <h2>01.AI Yi-Large LLM Launch</h2>
                 <p>01.AI's Yi-Large model is now accessible via the Fireworks AI API, offering high performance and cost efficiency, making it an excellent choice for various applications, particularly in natural language processing and multilingual support.</p>
                 <p>June 16, 2024</p>
             </div>
         </a>
-
-        <section class="astronomy-section">
-            <div class="astronomy-header">
-                <h2>Latest in AI</h2>
-                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+        <section class="blog-section">
+            <div class="blog-header">
+                <h2>Latest</h2>
             </div>
             <div class="astronomy-cards">
-                <a href="#" class="astronomy-card">
-                    <img src="./assets/images/blog-2.jpeg" alt="AI in Healthcare">
+                <a href="blog/dive-deeper-into-yi-9b/" class="astronomy-card">
+                    <img src="./assets/images/blog-2.webp" alt="AI in Healthcare">
                     <div class="astronomy-card-content">
                         <h3>Dive Deeper into Yi-9B</h3>
-                        <p>You might wonder, “Why Yi-9B?” Let’s dive into the reasons and insights behind its development.</p>
+                        <p>You might wonder, "Why Yi-9B?" Let's dive into the reasons and insights behind its development.</p>
                         <div class="astronomy-card-date">March 18, 2024</div>
                     </div>
                 </a>
-                <a href="#" class="astronomy-card">
-                    <img src="./assets/images/blog-5.jpeg" alt="AI and Climate Change">
+                <a href="blog/ai-infra-for-large-scale-clusters/" class="astronomy-card">
+                    <img src="./assets/images/blog-3.webp" alt="AI and Climate Change">
                     <div class="astronomy-card-content">
-                        <h3>AI's Role in Combating Climate Change</h3>
-                        <p>Discover how AI-powered solutions are helping to address global environmental challenges.</p>
-                        <div class="astronomy-card-date">June 10, 2024</div>
+                        <h3>零一万物面向万卡集群的 AI Infra 建设</h3>
+                        <p>分享 AI Infra 团队在面向万卡集群基建、计算、网络、存储、调度以及运维管理方面的设计思路和经验。</p>
+                        <div class="astronomy-card-date">April 30, 2024</div>
                     </div>
                 </a>
-                <a href="#" class="astronomy-card">
-                    <img src="./assets/images/blog-6.jpeg" alt="AI in Education">
+                <a href="blog/yi-model-training-optimization/" class="astronomy-card">
+                    <img src="./assets/images/blog-4.webp" alt="AI in Education">
                     <div class="astronomy-card-content">
-                        <h3>The Rise of AI-Powered Personalized Learning</h3>
-                        <p>Exploring how AI is revolutionizing education by tailoring learning experiences to individual students.</p>
-                        <div class="astronomy-card-date">June 5, 2024</div>
+                        <h3>Yi 系列模型训练优化最佳实践</h3>
+                        <p>通过模型设计、算子优化、分布式通信和集群调度等多方面的改进，显著提升了Yi系列模型的训练效率和稳定性。</p>
+                        <div class="astronomy-card-date">May 7, 2024</div>
                     </div>
                 </a>
             </div>
         </section>
     </main>
-
+    <footer>
+        <p>&copy; 2024 01.AI. All rights reserved.</p>
+    </footer>
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
@@ -316,13 +388,31 @@
         const searchInput = document.querySelector('.search-bar input');
         const searchResults = document.querySelector('.search-results');
 
-        const dummyResults = [
-            'AI in Finance',
-            'Machine Learning Basics',
-            'Natural Language Processing',
-            'Computer Vision Applications',
-            'Reinforcement Learning'
-        ];
+        function extractArticles() {
+            const articles = [];
+            const featuredArticle = document.querySelector('.featured-article');
+            const astronomyCards = document.querySelectorAll('.astronomy-card');
+
+            if (featuredArticle) {
+                articles.push({
+                    title: featuredArticle.querySelector('h2').textContent,
+                    content: featuredArticle.querySelector('p').textContent,
+                    url: featuredArticle.getAttribute('href'),
+                    image: featuredArticle.querySelector('img').getAttribute('src')
+                });
+            }
+
+            astronomyCards.forEach(card => {
+                articles.push({
+                    title: card.querySelector('h3').textContent,
+                    content: card.querySelector('p').textContent,
+                    url: card.getAttribute('href'),
+                    image: card.querySelector('img').getAttribute('src')
+                });
+            });
+
+            return articles;
+        }
 
         searchBar.addEventListener('click', () => {
             searchBar.classList.add('expanded');
@@ -331,26 +421,68 @@
 
         searchInput.addEventListener('input', (e) => {
             const value = e.target.value.toLowerCase();
-            const filteredResults = dummyResults.filter(result =>
-                result.toLowerCase().includes(value)
-            );
-
-            displayResults(filteredResults);
+            if (value.length > 1) {
+                const articles = extractArticles();
+                const filteredResults = articles.filter(article =>
+                    article.title.toLowerCase().includes(value) ||
+                    article.content.toLowerCase().includes(value)
+                );
+                displayResults(filteredResults, value);
+            } else {
+                searchResults.style.display = 'none';
+            }
         });
 
-        function displayResults(results) {
+        function displayResults(results, query) {
             searchResults.innerHTML = '';
             if (results.length > 0) {
                 results.forEach(result => {
                     const div = document.createElement('div');
                     div.classList.add('search-result-item');
-                    div.textContent = result;
+                    div.innerHTML = `
+                        <img class="search-result-image" src="${result.image}" alt="${result.title}">
+                        <div class="search-result-content">
+                            <div class="search-result-title">${highlightText(result.title, query)}</div>
+                            <div class="search-result-snippet">${getSnippet(result.content, query)}</div>
+                        </div>
+                    `;
+                    div.addEventListener('click', () => {
+                        window.location.href = result.url;
+                    });
                     searchResults.appendChild(div);
                 });
                 searchResults.style.display = 'block';
             } else {
                 searchResults.style.display = 'none';
             }
+        }
+
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function getSnippet(content, query) {
+            const maxLength = 100;
+            const lowercaseContent = content.toLowerCase();
+            const index = lowercaseContent.indexOf(query.toLowerCase());
+
+            if (index === -1) {
+                return content.substr(0, maxLength) + '...';
+            }
+
+            let start = Math.max(0, index - 20);
+            let end = Math.min(content.length, index + query.length + 60);
+            let snippet = content.substring(start, end);
+
+            if (start > 0) {
+                snippet = '...' + snippet;
+            }
+            if (end < content.length) {
+                snippet = snippet + '...';
+            }
+
+            return highlightText(snippet, query);
         }
 
         document.addEventListener('click', (e) => {
@@ -360,9 +492,40 @@
                 searchInput.value = '';
             }
         });
+        // Add this new function to handle blog post links
+        function handleBlogLinks() {
+            const blogLinks = document.querySelectorAll('a[href^="blog/"]');
+            blogLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const postName = href.split('/')[1];
+                    let mdFile;
+                    switch(postName) {
+                        case '01-ai-yi-large-llm-launch':
+                            mdFile = 'en/2024-06-16-yi-large-llm-launch.md';
+                            break;
+                        case 'dive-deeper-into-yi-9b':
+                            mdFile = 'en/2024-03-18-Dive-Deeper-into-Yi-9B.md';
+                            break;
+                        case 'ai-infra-for-large-scale-clusters':
+                            mdFile = 'zh/2024-04-30-零一万物面向万卡集群的 AI Infra 建设.md';
+                            break;
+                        case 'yi-model-training-optimization':
+                            mdFile = 'zh/2024-05-07-Yi 系列模型训练优化最佳实践.md';
+                            break;
+                        default:
+                            mdFile = '';
+                    }
+                    if (mdFile) {
+                        window.location.href = `blog.html?post=${encodeURIComponent(mdFile)}`;
+                    }
+                });
+            });
+        }
+
+        // Call the function when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', handleBlogLinks);
     </script>
-    <!-- 100% privacy-first analytics -->
-<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
 </body>
 </html>
